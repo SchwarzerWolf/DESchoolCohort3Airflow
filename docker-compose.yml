@@ -16,6 +16,7 @@ x-airflow-common:
     AIRFLOW__WEBSERVER__EXPOSE_CONFIG: 'true'
     AIRFLOW__CORE__AUTH_MANAGER: airflow.api_fastapi.auth.managers.simple.simple_auth_manager.SimpleAuthManager
     AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS: "admin:admin"
+    AIRFLOW_CONN_MSTEAMS_WEBHOOK: ${AIRFLOW_CONN_MSTEAMS_WEBHOOK}
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
     AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
   volumes:
