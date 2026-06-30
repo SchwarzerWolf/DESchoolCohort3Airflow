@@ -1,0 +1,17 @@
+data_source biogrid_silver:
+  type: postgres
+  host: local-db
+  port: 5432
+  username: postgres
+  password: 123456
+  database: postgres
+  schema: silver
+
+data_source biogrid_gold:
+  type: postgres
+  host: local-db
+  port: 5432
+  username: postgres
+  password: 123456
+  database: postgres
+  schema: gold

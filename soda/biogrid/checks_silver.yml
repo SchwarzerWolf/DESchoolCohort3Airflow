@@ -1,0 +1,27 @@
+checks for biogrid_data:
+  # Table is populated
+  - row_count > 0
+
+  # Key columns are never null
+  - missing_count(biogrid_interaction_id) = 0
+  - missing_count(biogrid_id_interactor_a) = 0
+  - missing_count(biogrid_id_interactor_b) = 0
+  - missing_count(version) = 0
+
+  # The version processed by this run actually landed
+  - current_version_rows > 0:
+      current_version_rows query: |
+        SELECT count(*) FROM silver.biogrid_data WHERE version = '${version}'
+      name: Rows exist for the current run version
+
+  # No duplicate interaction ids within a single version
+  - duplicate_within_version = 0:
+      duplicate_within_version query: |
+        SELECT count(*) FROM (
+          SELECT biogrid_interaction_id
+          FROM silver.biogrid_data
+          WHERE version = '${version}'
+          GROUP BY biogrid_interaction_id
+          HAVING count(*) > 1
+        ) duplicates
+      name: No duplicate interaction ids within the current version

@@ -1,0 +1,18 @@
+checks for biogrid_interactors:
+  # Table is populated
+  - row_count > 0
+
+  # Primary key is present and unique
+  - missing_count(interactor_a) = 0
+  - duplicate_count(interactor_a) = 0
+
+  # No duplicate interactor B values within a single row's array
+  - rows_with_duplicate_interactors_b = 0:
+      rows_with_duplicate_interactors_b query: |
+        SELECT count(*)
+        FROM gold.biogrid_interactors
+        WHERE cardinality(interactors_b) <> (
+            SELECT count(DISTINCT element)
+            FROM unnest(interactors_b) AS element
+        )
+      name: No duplicate interactor B values within a row
