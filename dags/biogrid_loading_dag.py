@@ -11,34 +11,35 @@ from airflow.utils.trigger_rule import TriggerRule
 from airflow.sdk import DAG, Param, Variable
 from airflow.providers.standard.operators.python import PythonOperator, BranchPythonOperator
 
+# TODO make this secure
 def send_teams_alert(context):
     webhook_url = 'https://add-your-token'
     dag_id = context['task_instance'].dag_id
     task_id = context['task_instance'].task_id
 
     message = {
-        "type": "message",
-        "attachments": [
+        'type': 'message',
+        'attachments': [
             {
-                "contentType": "application/vnd.microsoft.card.adaptive",
-                "content": {
-                    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                    "type": "AdaptiveCard",
-                    "version": "1.4",
-                    "body": [
+                'contentType': 'application/vnd.microsoft.card.adaptive',
+                'content': {
+                    '$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',
+                    'type': 'AdaptiveCard',
+                    'version': '1.4',
+                    'body': [
                         {
-                            "type": "TextBlock",
-                            "text": "🚨 **Airflow Task Failed!**",
-                            "wrap": True,
-                            "weight": "Bolder",
-                            "color": "Attention",
-                            "size": "Medium"
+                            'type': 'TextBlock',
+                            'text': '🚨 **Airflow Task Failed!**',
+                            'wrap': True,
+                            'weight': 'Bolder',
+                            'color': 'Attention',
+                            'size': 'Medium'
                         },
                         {
-                            "type": "FactSet",
-                            "facts": [
-                                {"title": "DAG", "value": dag_id},
-                                {"title": "Task", "value": task_id},
+                            'type': 'FactSet',
+                            'facts': [
+                                {'title': 'DAG', 'value': dag_id},
+                                {'title': 'Task', 'value': task_id},
                             ]
                         }
                     ]
